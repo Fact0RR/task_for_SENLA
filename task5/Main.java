@@ -1,7 +1,7 @@
 package task5;
 
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -32,7 +32,7 @@ public class Main {
         list.add(new SomeThing(343,489,"meet"));
         list.add(new SomeThing(300,413,"milk"));
         list.add(new SomeThing(232,123,"bread"));
-        list.add(new SomeThing(432,523,"coffee"));
+        list.add(new SomeThing(500,1000,"coffee"));
 
 
 
@@ -83,7 +83,7 @@ public class Main {
         return l;
     }
 
-    public static void Logic(final ArrayList<SomeThing> list, final Safe safe)
+    public static void Logic (final ArrayList<SomeThing> list, final Safe safe)
     {
 
         int maxPrice = 0;
@@ -92,39 +92,43 @@ public class Main {
 
         ArrayList<int []> ListOfAllCombinatin = BuildExceptionList(list.size());
 
+
+
+
         //создадим быструю комбинацию
         ArrayList<SomeThing> fastList = new ArrayList<>();
 
-        for(int i = 0 ;i<ListOfAllCombinatin.size();i++)
+        for(int i =0;i<ListOfAllCombinatin.size();i++)
         {
-            for(int j =0 ;j<ListOfAllCombinatin.get(i).length;j++)
+            for(int j =0;j<ListOfAllCombinatin.get(i).length;j++)
             {
-             fastList.add(list.get(j));
+                fastList.add(list.get(ListOfAllCombinatin.get(i)[j]-1));
+
             }
+
             //логика
-            if(SumOfPVolume(fastList) <= safe.getTotalVolume())
+            if(SumOfPVolume(fastList)<= safe.getTotalVolume())
             {
                 if(SumOfPrice(fastList)>maxPrice)
                 {
-                    for(int b =0 ;b<bestCombination.size() ;b++ )
+                    for(int j = bestCombination.size()-1 ;j>=0;j--)
                     {
                         bestCombination.remove(0);
                     }
                     maxPrice = SumOfPrice(fastList);
-                    for(int b =0 ;b<fastList.size();b++ )
+                    for(int j = 0 ;j<fastList.size();j++)
                     {
-                        bestCombination.add(fastList.get(b));
+                        bestCombination.add(fastList.get(j));
                     }
                 }
             }
 
-            //очищаем быстрый список
-            for(int j =0 ;j<ListOfAllCombinatin.get(i).length;j++)
+            for(int j =fastList.size()-1;j>=0;j--)
             {
-                fastList.remove(0);
+                fastList.remove(j);
             }
-        }
 
+        }
         System.out.println("Лучший прайс: "+maxPrice);
         if(maxPrice == 0)
         {
